@@ -4,9 +4,8 @@ import re
 
 def calculate(line):
     res = 0
-    for gem in re.findall(r'mul\([0-9]{1,3},[0-9]{1,3}\)', line):
-        numbers = re.findall(r'[0-9]{1,3}', gem)
-        res += int(numbers[0]) * int(numbers[1])
+    for gem in re.findall(r'mul\(([0-9]{1,3}),([0-9]{1,3})\)', line):
+        res += int(gem[0]) * int(gem[1])
     return res
 
 
