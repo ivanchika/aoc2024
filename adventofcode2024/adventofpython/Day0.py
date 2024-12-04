@@ -4,8 +4,11 @@ from pathlib import Path
 
 class Day0:
 
+    input = None
+
     def __init__(self, year, input_filename):
         self.path = Path("..", "resources", year, input_filename)
+        self.input = self.read_lines()
 
     @abstractmethod
     def part_one(self):

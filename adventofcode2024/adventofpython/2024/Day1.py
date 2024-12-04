@@ -5,13 +5,12 @@ class Day1(Day0):
 
     def part_one(self):
         res = 0
-        lines = self.read_lines()
         left = []
         right = []
-        for line in lines:
-            parts = line.split('  ')
-            left.append(int(parts[0]))
-            right.append(int(parts[1]))
+        for line in self.input:
+            l, r = line.split('  ')
+            left.append(int(l))
+            right.append(int(r))
         left.sort()
         right.sort()
         for index in range(len(left)):
@@ -22,13 +21,12 @@ class Day1(Day0):
 
     def part_two(self):
         res = 0
-        lines = self.read_lines()
         left = []
         right = []
-        for line in lines:
-            parts = line.split('  ')
-            left.append(int(parts[0]))
-            right.append(int(parts[1]))
+        for line in self.input:
+            l, r = line.split('  ')
+            left.append(int(l))
+            right.append(int(r))
         for index in range(len(left)):
             res += left[index] * right.count(left[index])
 

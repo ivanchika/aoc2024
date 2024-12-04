@@ -5,7 +5,7 @@ class Day2(Day0):
 
     def part_one(self):
         res = 0
-        for line in self.read_lines():
+        for line in self.input:
             if is_line_safe(line.split(' ')):
                 res += 1
         print(res)
@@ -13,7 +13,7 @@ class Day2(Day0):
 
     def part_two(self):
         res = 0
-        for line in self.read_lines():
+        for line in self.input:
             items = line.split(' ')
             if is_line_safe(items):
                 res += 1

@@ -12,11 +12,11 @@ def calculate(line):
 class Day3(Day0):
 
     def part_one(self):
-        print(calculate(self.read_line()))
+        print(calculate(self.input[0]))
 
     def part_two(self):
         res = 0
-        for item in re.split(r"do\(\)", self.read_line()):
+        for item in re.split(r"do\(\)", self.input[0]):
             res += calculate(re.split(r"don't\(\)", item)[0])
         print(res)
 
