@@ -2,6 +2,12 @@ from abc import abstractmethod
 from pathlib import Path
 
 
+def print_array(array):
+    for i in range(len(array)):
+        line = ''.join(list(array[i][j] for j in range(array[i])))
+        print(line)
+
+
 class Day0:
 
     input = None
