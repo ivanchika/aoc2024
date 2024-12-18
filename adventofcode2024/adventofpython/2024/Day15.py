@@ -153,7 +153,7 @@ class Day15(Day0):
                     robot = (i, j * 2)
         # print(steps)
         cols *= 2
-        print_map_2(rows, cols, walls, l_boxes, r_boxes, robot)
+        # print_map_2(rows, cols, walls, l_boxes, r_boxes, robot)
         direction = {
             '<': ( 0, -1),
             '>': ( 0,  1),
@@ -166,15 +166,19 @@ class Day15(Day0):
             if pos in walls:
                 return False
             if pos in l_boxes:
-                q.append(pos)
-                q.append((pos[0], pos[1] + 1))
+                if pos not in q:
+                    q.append(pos)
+                if (pos[0], pos[1] + 1) not in q:
+                    q.append((pos[0], pos[1] + 1))
                 moved_left = (pos[0] + move[0], pos[1])
                 moved_right = (pos[0] + move[0], pos[1] + 1)
                 can = can and can_move(moved_left, move, q)
                 can = can and can_move(moved_right, move, q)
             elif pos in r_boxes:
-                q.append((pos[0], pos[1] - 1))
-                q.append(pos)
+                if (pos[0], pos[1] - 1) not in q:
+                    q.append((pos[0], pos[1] - 1))
+                if pos not in q:
+                    q.append(pos)
                 moved_left = (pos[0] + move[0], pos[1] - 1)
                 moved_right = (pos[0] + move[0], pos[1])
                 can = can and can_move(moved_left, move, q)
@@ -184,14 +188,12 @@ class Day15(Day0):
             return can
 
         for step in steps:
-            print(step)
             move = direction.get(step)
             moved = robot[0] + move[0], robot[1] + move[1]
             if moved in walls:
                 continue
             if moved not in l_boxes and moved not in r_boxes:
                 robot = moved
-                print_map_2(rows, cols, walls, l_boxes, r_boxes, robot)
                 continue
 
             if step == '>' or step == '<':
@@ -212,8 +214,6 @@ class Day15(Day0):
             else:
                 queue = []
                 can_or_not = can_move(moved, move, queue)
-                print(can_or_not)
-                print(queue)
                 if can_or_not:
                     while queue:
                         last = queue.pop()
@@ -223,11 +223,6 @@ class Day15(Day0):
                             l_boxes[l_boxes.index(last)] = (last[0] + move[0], last[1])
                     robot = (robot[0] + move[0], robot[1] + move[1])
 
-            # can_be_moved = can_move(moved, step, queue)
-            # print(can_be_moved)
-
-            print_map_2(rows, cols, walls, l_boxes, r_boxes, robot)
-
         for box in l_boxes:
             res += box[0] * 100 + box[1]
 
@@ -236,11 +231,11 @@ class Day15(Day0):
 
 day='15'
 
-# print('Day15 Part1 Test')
-# Day15('2024', 'day' + day + '_test.txt').part_one()
-# print('Day15 Part1')
-# Day15('2024', 'day' + day + '.txt').part_one()
+print('Day15 Part1 Test')
+Day15('2024', 'day' + day + '_test.txt').part_one()
+print('Day15 Part1')
+Day15('2024', 'day' + day + '.txt').part_one()
 print('Day15 Part2 Test')
 Day15('2024', 'day' + day + '_test.txt').part_two()
-# print('Day15 Part2')
-# Day15('2024', 'day' + day + '.txt').part_two()
+print('Day15 Part2')
+Day15('2024', 'day' + day + '.txt').part_two()
