@@ -43,11 +43,51 @@ def find_shortest_path(grid, start, cheat_possible = False, shorted_visited = No
                                 queue.append((cheated_path, (y2, x2, step), visited_copy))
     return paths
 
+def find_shortest_path2(grid, start, cheat_possible = False, shorted_visited = None):
+    global cheats
+    height = len(grid)
+    width = len(grid[0])
+    queue = collections.deque([([start], None, {start: 0})])
+    paths = []
+    while queue:
+        path = queue.popleft()
+        y, x = path[0][-1]
+        cheat = path[1]
+        visited = path[2]
+        if cheat and (y, x) in visited.keys() and (y, x) in shorted_visited.keys() and visited[(y, x)] < shorted_visited[y, x]:
+            paths.append((shorted_visited[y, x] - visited[(y, x)], cheat))
+            continue
+        elif grid[y][x] == goal and not cheat_possible:
+            return path
+
+        for step in ((-1, 0), (0, 1), (1, 0),(0, -1)):
+                y2 = y + step[0]
+                x2 = x + step[1]
+                if 1 <= x2 < width - 1 and 1 <= y2 < height - 1:
+                    if (y2, x2) not in visited.keys():
+                        if grid[y2][x2] != wall:
+                                visited_copy = visited.copy()
+                                visited_copy[(y2, x2)] = len(path[0]) + 1
+                                queue.append((path[0] + [(y2, x2)], cheat, visited_copy))
+                        elif cheat_possible and (not cheat or cheat[3] < 20) and (y2, x2, step) not in cheats:
+                                if not cheat:
+                                    cheat_step = 1
+                                else:
+                                    cheat_step = cheat[3] + 1
+                                cheat = (y2, x2, step, cheat_step)
+                                visited_copy = visited.copy()
+                                visited_copy[(y2, x2)] = len(path[0]) + 1
+                                cheated_path = path[0] + [(y2, x2)]
+                                cheats.append((y2, x2, step))
+                                queue.append((cheated_path, cheat, visited_copy))
+    return paths
+
 
 class Day20(Day0):
 
     def part_one(self):
         global cheats
+        cheats = []
         start = None
         for i in range(len(self.input)):
             if 'S' in self.input[i]:
@@ -61,17 +101,28 @@ class Day20(Day0):
         print(sum(1 for che in cheated_shortest if che[0] >= 100))
 
     def part_two(self):
-        res = 0
-        print(res)
-
+        global cheats
+        cheats = []
+        start = None
+        for i in range(len(self.input)):
+            if 'S' in self.input[i]:
+                start = (i, self.input[i].index('S'))
+                break
+        no_cheat_shortest_path = find_shortest_path(self.input, start)
+        shortest_visited = no_cheat_shortest_path[2]
+        cheated_shortest = find_shortest_path2(self.input, start, True, shortest_visited)
+        counter = collections.Counter([d[0] for d in cheated_shortest])
+        for cou in counter.keys():
+            print(cou, ':', counter[cou])
+        print(sum(1 for che in cheated_shortest if che[0] >= 100))
 
 day='20'
 
-print('Day20 Part1 Test')
-Day20('2024', 'day' + day + '_test.txt').part_one()
-print('Day20 Part1')
-Day20('2024', 'day' + day + '.txt').part_one()
-# print('Day20 Part2 Test')
-# Day20('2024', 'day' + day + '_test.txt').part_two()
+# print('Day20 Part1 Test')
+# Day20('2024', 'day' + day + '_test.txt').part_one()
+# print('Day20 Part1')
+# Day20('2024', 'day' + day + '.txt').part_one()
+print('Day20 Part2 Test')
+Day20('2024', 'day' + day + '_test.txt').part_two()
 # print('Day20 Part2')
 # Day20('2024', 'day' + day + '.txt').part_two()
