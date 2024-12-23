@@ -85,9 +85,9 @@ day='20'
 
 # print('Day20 Part1 Test')
 # Day20('2024', 'day' + day + '_test.txt').part_one()
-print('Day20 Part1')
-Day20('2024', 'day' + day + '.txt').part_one()
+# print('Day20 Part1')
+# Day20('2024', 'day' + day + '.txt').part_one()
 # print('Day20 Part2 Test')
 # Day20('2024', 'day' + day + '_test.txt').part_two()
-# print('Day20 Part2')
-# Day20('2024', 'day' + day + '.txt').part_two()
+print('Day20 Part2')
+Day20('2024', 'day' + day + '.txt').part_two()
