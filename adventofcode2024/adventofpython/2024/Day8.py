@@ -1,4 +1,4 @@
-from itertools import product, combinations
+from itertools import combinations
 
 from Day0 import Day0
 
