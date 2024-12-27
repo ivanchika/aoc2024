@@ -1,5 +1,5 @@
 from Day0 import Day0
-from collections import defaultdict
+from re import search
 
 operators = {
     'OR': lambda a, b: a | b,
@@ -11,8 +11,8 @@ class Day24(Day0):
 
     def part_one(self):
         res = ''
-        results = defaultdict()
-        formulas = defaultdict()
+        results = {}
+        formulas = {}
         data = self.input
         for i in range(data.index('')):
             item = data[i].split(': ')
@@ -38,17 +38,43 @@ class Day24(Day0):
 
 
     def part_two(self):
-        res = 0
-        print(res)
+        results = {}
+        formulas = {}
+
+        data = self.input
+
+        for i in range(data.index('')):
+            item = data[i].split(': ')
+            results[item[0]] = int(item[1])
+
+        for i in range(data.index('') + 1, len(data)):
+            l = data[i].split(' -> ')
+            a, op, b = l[0].split(' ')
+            val = l[1]
+            formulas[val] = (a, op, b)
+
+        swaps = set()
+
+        last_z = sorted(formulas.keys())[-1]
+
+        for res in formulas:
+            a, op, b = formulas[res]
+            if ((res[0] == "z" and op != "XOR" and res != last_z)
+                    or (op == "XOR" and not search(r'^x|y|z', res) and not search(r'^x|y|z', a) and not search(r'^x|y|z', b))
+                    or (op == "AND" and "x00" not in [a, b] and next((True for a, op, b in formulas.values() if (res == a or res == b) and op != "OR"), False))
+                    or (op == "XOR" and next((True for a, op, b in formulas.values() if (res == a or res == b) and op == "OR"), False))):
+                swaps.add(res)
+
+        print(",".join(sorted(swaps)))
 
 
 day='24'
 
 # print('Day24 Part24 Test')
 # Day24('2024', 'day' + day + '_test.txt').part_one()
-print('Day24 Part24')
-Day24('2024', 'day' + day + '.txt').part_one()
-#print('Day24 Part2 Test')
-#Day24('2024', 'day' + day + '_test.txt').part_two()
-#print('Day24 Part2')
-#Day24('2024', 'day' + day + '.txt').part_two()
+# print('Day24 Part24')
+# Day24('2024', 'day' + day + '.txt').part_one()
+# print('Day24 Part2 Test')
+# Day24('2024', 'day' + day + '_test.txt').part_two()
+print('Day24 Part2')
+Day24('2024', 'day' + day + '.txt').part_two()
