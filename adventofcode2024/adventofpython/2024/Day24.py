@@ -7,12 +7,13 @@ operators = {
     'XOR': lambda a, b: a ^ b
 }
 
+
 class Day24(Day0):
 
-    def part_one(self):
-        res = ''
-        results = {}
-        formulas = {}
+    results = {}
+    formulas = {}
+
+    def parse(self, results, formulas):
         data = self.input
         for i in range(data.index('')):
             item = data[i].split(': ')
@@ -22,6 +23,13 @@ class Day24(Day0):
             a, op, b = l[0].split(' ')
             val = l[1]
             formulas[val] = (a, op, b)
+
+    def part_one(self):
+        res = ''
+        results = {}
+        formulas = {}
+
+        self.parse(results, formulas)
 
         def calc(zk, fs):
             if zk in results.keys():
@@ -33,7 +41,6 @@ class Day24(Day0):
 
         for z in reversed(sorted(filter(lambda k : k[0] == 'z', formulas.keys()))):
             res += str(calc(z, formulas))
-        print(res)
         print(int(res, 2))
 
 
@@ -41,17 +48,7 @@ class Day24(Day0):
         results = {}
         formulas = {}
 
-        data = self.input
-
-        for i in range(data.index('')):
-            item = data[i].split(': ')
-            results[item[0]] = int(item[1])
-
-        for i in range(data.index('') + 1, len(data)):
-            l = data[i].split(' -> ')
-            a, op, b = l[0].split(' ')
-            val = l[1]
-            formulas[val] = (a, op, b)
+        self.parse(results, formulas)
 
         swaps = set()
 
